@@ -6,12 +6,14 @@
 #include <MagneticFluidFormAlgorithm/MagneticFluidFormAlgorithm.h>
 
 
+#pragma MARK - Object lifecycle
+
 algorithm::DifferenceMethod::DifferenceMethod() = default;
 
 
 algorithm::DifferenceMethod::DifferenceMethod(
-        std::vector<Variables> *experimentVariables,
-        std::vector<IterationInfo> *iterationsInfo)
+        std::vector<Variables>* experimentVariables,
+        std::vector<IterationInfo>* iterationsInfo)
 {
     if (experimentVariables == nullptr)
     {
@@ -37,7 +39,7 @@ algorithm::DifferenceMethod::DifferenceMethod(
 algorithm::DifferenceMethod::~DifferenceMethod() = default;
 
 
-#pragma MARK - Algorithm
+#pragma MARK - Private mathods
 
 void algorithm::DifferenceMethod::fillVariables()
 {
@@ -223,6 +225,37 @@ void algorithm::DifferenceMethod::pushExperimentResults(long long drawRate)
 }
 
 
+double* algorithm::DifferenceMethod::getVariableParameterPointerByName(const std::string &parameterName)
+{
+    double* resultPtr = nullptr;
+
+    if (parameterName == "U")
+    {
+        resultPtr = &(variables.U);
+    }
+    if (parameterName == "B0")
+    {
+        resultPtr = &(variables.B0);
+    }
+    if (parameterName == "A1")
+    {
+        resultPtr = &(variables.A1);
+    }
+    if (parameterName == "A2")
+    {
+        resultPtr = &(variables.A2);
+    }
+    if (parameterName == "ALPHA")
+    {
+        resultPtr = &(variables.ALPHA);
+    }
+
+    return resultPtr;
+}
+
+
+#pragma MARK - Public methods
+
 void algorithm::DifferenceMethod::calcResult()
 {
     resetFields();
@@ -232,27 +265,19 @@ void algorithm::DifferenceMethod::calcResult()
 
     try
     {
-// ***************U*****************
-
-        changeParameter(variables.U, 101, 1, -2, "U");
-
-// ***************A2*****************
-
-        changeParameter(variables.A2, 1, 0.05, -2, "A2");
-
-        changeParameter(variables.A2, 3.0, 0.05, -1, "A2");
-
-// ***************A1*****************
-
-        changeParameter(variables.A1, 3.0, 0.1, -1, "A1");
-
-//		changeParameter(variables.A1, 1.5, 0.1, -1, "A1");
-
-        changeParameter(variables.A1, 1.0, 0.1, -1, "A1");
-
-//		changeParameter(variables.A1, 0.5, 0.1, -1, "A1");
-
-        changeParameter(variables.A1, 0.0, 0.1, -1, "A1");
+        if (targetParameters != nullptr)
+        {
+            for (auto &targetParameter : *targetParameters)
+            {
+                double* variableParameterPtr = getVariableParameterPointerByName(targetParameter.parameterName);
+                if (variableParameterPtr != nullptr)
+                {
+                    changeParameter(
+                            *variableParameterPtr, targetParameter.targetValue, targetParameter.step,
+                            targetParameter.drawRate, targetParameter.parameterName);
+                }
+            }
+        }
     }
     catch (ParameterNotReachTargetValue &e)
     {
@@ -265,8 +290,6 @@ void algorithm::DifferenceMethod::calcResult()
     std::cout << "************************" << std::endl;
 }
 
-
-#pragma MARK - Setters/Getters
 
 void algorithm::DifferenceMethod::setIsNeedResetTau(bool isNeedResetTau)
 {
@@ -290,4 +313,16 @@ void algorithm::DifferenceMethod::setIterationFinishedCallback(
 std::function<void(long long, long long)>* algorithm::DifferenceMethod::getIterationFinishedCallback()
 {
     return iterationFinishedCallback;
+}
+
+
+void algorithm::DifferenceMethod::setTargetParameters(std::vector<TargetParameter>* targetParameters)
+{
+    this->targetParameters = targetParameters;
+}
+
+
+std::vector<algorithm::TargetParameter>* algorithm::DifferenceMethod::getTargetParameters()
+{
+    return targetParameters;
 }

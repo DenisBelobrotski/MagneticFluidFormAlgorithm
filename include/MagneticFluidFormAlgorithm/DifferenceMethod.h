@@ -55,6 +55,15 @@ namespace algorithm
     };
 
 
+    struct TargetParameter
+    {
+        std::string parameterName;
+        double targetValue;
+        double step;
+        long long drawRate;
+    };
+
+
     class DifferenceMethod
     {
     protected:
@@ -64,15 +73,16 @@ namespace algorithm
         std::function<void(long long, long long)>* iterationFinishedCallback;
 
     private:
-        std::vector<Variables> *experimentVariables;
-        std::vector<IterationInfo> *iterationsInfo;
+        std::vector<Variables>* experimentVariables;
+        std::vector<IterationInfo>* iterationsInfo;
+        std::vector<algorithm::TargetParameter>* targetParameters;
         bool isLastExperiment;
         bool isNeedResetTau;
 
     public:
         DifferenceMethod(
-                std::vector<Variables> *experimentVariables,
-                std::vector<IterationInfo> *iterationsInfo);
+                std::vector<Variables>* experimentVariables,
+                std::vector<IterationInfo>* iterationsInfo);
 
         ~DifferenceMethod();
 
@@ -85,6 +95,10 @@ namespace algorithm
         void setIterationFinishedCallback(std::function<void(long long, long long)>* iterationFinishedCallback);
 
         std::function<void(long long, long long)>* getIterationFinishedCallback();
+
+        void setTargetParameters(std::vector<TargetParameter>* targetParameters);
+
+        std::vector<TargetParameter>* getTargetParameters();
 
     protected:
         DifferenceMethod();
@@ -108,5 +122,7 @@ namespace algorithm
         void runExperiment(long long drawRate) noexcept(false);
 
         void pushExperimentResults(long long drawRate);
+
+        double* getVariableParameterPointerByName(const std::string &parameterName);
     };
 }
