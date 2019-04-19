@@ -111,6 +111,11 @@ namespace algorithm
 
         void resetFields();
 
+        /**
+         * @param drawRate:
+         * -2 doesn't push any experiments
+         * -1 pushes only last experiment
+         */
         void changeParameter(
                 double &parameter, double target, double step, long long drawRate, std::string parameterName)
         noexcept(false);
