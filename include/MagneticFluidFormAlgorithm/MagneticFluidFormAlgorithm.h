@@ -10,3 +10,5 @@
 
 #include "Exceptions.h"
 #include "MathUtils.h"
+
+#include "AlgorithmConfigurator.h"

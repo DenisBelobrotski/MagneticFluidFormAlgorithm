@@ -34,11 +34,17 @@ namespace algorithm
 
     class VectorSizeException : public std::runtime_error
     {
-
     public:
         VectorSizeException();
 
-        explicit VectorSizeException(const char *msg);
+        explicit VectorSizeException(const char* msg);
+    };
 
+    class IncorrectConfigException : public std::runtime_error
+    {
+    public:
+        IncorrectConfigException();
+
+        explicit IncorrectConfigException(const char* msg);
     };
 }

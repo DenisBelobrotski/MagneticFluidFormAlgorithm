@@ -24,3 +24,7 @@ double algorithm::ParameterNotReachTargetValue::getTargetValue()
 algorithm::VectorSizeException::VectorSizeException() : runtime_error("VectorSizeException") {}
 
 algorithm::VectorSizeException::VectorSizeException(const char *msg) : runtime_error(msg) {}
+
+algorithm::IncorrectConfigException::IncorrectConfigException() : runtime_error("IncorrectConfigException") {}
+
+algorithm::IncorrectConfigException::IncorrectConfigException(const char *msg) : runtime_error(msg) {}
