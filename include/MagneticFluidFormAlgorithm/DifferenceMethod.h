@@ -84,7 +84,7 @@ namespace algorithm
                 std::vector<Variables>* experimentVariables,
                 std::vector<IterationInfo>* iterationsInfo);
 
-        ~DifferenceMethod();
+        virtual ~DifferenceMethod();
 
         void calcResult();
 

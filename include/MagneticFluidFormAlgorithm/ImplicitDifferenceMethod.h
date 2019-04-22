@@ -11,7 +11,7 @@ namespace algorithm
         ImplicitDifferenceMethod(
                 std::vector<Variables> *experimentVariables, std::vector<IterationInfo> *iterationsInfo);
 
-        ~ImplicitDifferenceMethod();
+        ~ImplicitDifferenceMethod() override;
 
         void runIterationProcess() noexcept(false) override;
 

@@ -15,7 +15,7 @@ namespace algorithm
                 std::vector<Variables> *experimentVariables,
                 std::vector<IterationInfo> *iterationsInfo);
 
-        ~ExplicitDifferenceMethod();
+        ~ExplicitDifferenceMethod() override;
 
         void runIterationProcess() noexcept(false) override;
 

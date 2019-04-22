@@ -11,7 +11,7 @@ namespace algorithm
         ExplicitMethodUniformConcentration(
                 std::vector<Variables> *experimentVariables, std::vector<IterationInfo> *iterationsInfo);
 
-        ~ExplicitMethodUniformConcentration();
+        ~ExplicitMethodUniformConcentration() override;
 
     protected:
         ExplicitMethodUniformConcentration();
