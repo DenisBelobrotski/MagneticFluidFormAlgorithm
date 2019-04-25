@@ -62,6 +62,9 @@ void algorithm::DifferenceMethod::fillVariables()
     variables.A1 = INITIAL_A1;
     variables.A2 = INITIAL_A2;
     variables.ALPHA = INITIAL_ALPHA;
+
+    std::cout << initialParameters->a;
+    std::cout << std::endl;
 }
 
 
@@ -325,4 +328,14 @@ void algorithm::DifferenceMethod::setTargetParameters(std::vector<TargetParamete
 std::vector<algorithm::TargetParameter>* algorithm::DifferenceMethod::getTargetParameters()
 {
     return targetParameters;
+}
+
+void algorithm::DifferenceMethod::setInitialParameters(InitialParameters* initialParameters)
+{
+    this->initialParameters = initialParameters;
+}
+
+algorithm::InitialParameters* algorithm::DifferenceMethod::getInitialParameters()
+{
+    return initialParameters;
 }

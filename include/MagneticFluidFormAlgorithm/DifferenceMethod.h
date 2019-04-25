@@ -10,9 +10,10 @@
 
 namespace algorithm
 {
-    const int N = 200; //500
     const double LOWER_BOUND = 0;
     const double UPPER_BOUND = 1;
+
+    const int N = 200; //500
     const double STEP = (UPPER_BOUND - LOWER_BOUND) / N;
     const double ACCURACY = 1E-5;
     const int MAX_ITERATIONS_NUMBER = 30000;
@@ -26,6 +27,16 @@ namespace algorithm
     const double INITIAL_A2 = 0.05; //0, 1, 3, 6
     const double INITIAL_ALPHA = M_PI_4; //M_PI_4, M_PI_2
 
+
+    class InitialParameters
+    {
+    public:
+        const int a;
+
+        InitialParameters():a(0){}
+
+        InitialParameters(int a):a(a){}
+    };
 
     struct Variables
     {
@@ -71,6 +82,7 @@ namespace algorithm
         long long iterationsCounter;
         long long experimentsCounter;
         std::function<void(long long, long long)>* iterationFinishedCallback;
+        InitialParameters* initialParameters;
 
     private:
         std::vector<Variables>* experimentVariables;
@@ -99,6 +111,10 @@ namespace algorithm
         void setTargetParameters(std::vector<TargetParameter>* targetParameters);
 
         std::vector<TargetParameter>* getTargetParameters();
+
+        void setInitialParameters(InitialParameters* initialParameters);
+
+        InitialParameters* getInitialParameters();
 
     protected:
         DifferenceMethod();
