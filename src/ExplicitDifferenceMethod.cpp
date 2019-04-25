@@ -10,9 +10,10 @@ algorithm::ExplicitDifferenceMethod::ExplicitDifferenceMethod() : DifferenceMeth
 
 algorithm::ExplicitDifferenceMethod::ExplicitDifferenceMethod(
         std::vector<Variables> *experimentVariables,
-        std::vector<IterationInfo> *iterationsInfo)
+        std::vector<IterationInfo> *iterationsInfo,
+        InitialParameters* initialParameters)
         :
-        DifferenceMethod(experimentVariables, iterationsInfo)
+        DifferenceMethod(experimentVariables, iterationsInfo, initialParameters)
 {
 }
 
@@ -25,7 +26,7 @@ algorithm::ExplicitDifferenceMethod::~ExplicitDifferenceMethod() = default;
 void algorithm::ExplicitDifferenceMethod::calcBeta()
 {
     double r0 = variables.r[0];
-    double r1 = variables.r[N];
+    double r1 = variables.r[initialParameters->N];
 
     double I0 = calcIntegral0();
     double L = variables.L = calcL(I0, variables.U);
@@ -40,7 +41,7 @@ void algorithm::ExplicitDifferenceMethod::calcBeta()
     std::vector<double> prevBeta = variables.beta;
 #endif
 
-    for (auto i = N - 1; i > 0; i--)
+    for (auto i = initialParameters->N - 1; i > 0; i--)
     {
         double tmpZ = (variables.z[i] + variables.z[i + 1]) / 2;
         double tmpR = (variables.r[i] + variables.r[i + 1]) / 2;
@@ -50,7 +51,7 @@ void algorithm::ExplicitDifferenceMethod::calcBeta()
                                        variables.U, variables.B0, variables.A1, variables.A2);
 
 #if SIMPLE_RELAXATION_FORMULA
-        variables.beta[i] = variables.beta[i + 1] - STEP * upperPhi;
+        variables.beta[i] = variables.beta[i + 1] - initialParameters->STEP * upperPhi;
 #else
         variables.beta[i] = variables.beta[i + 1] - STEP * upperPhi +
             (1 - variables.TAU) * (variables.beta[i] - variables.beta[i + 1] + STEP * upperPhi);
@@ -58,7 +59,7 @@ void algorithm::ExplicitDifferenceMethod::calcBeta()
     }
 
 #if SIMPLE_RELAXATION_FORMULA
-    for (auto i = 0; i < N + 1; i++)
+    for (auto i = 0; i < initialParameters->N + 1; i++)
     {
         variables.beta[i] = (1 - variables.TAU) * prevBeta[i] + variables.TAU * variables.beta[i];
     }
@@ -70,22 +71,22 @@ void algorithm::ExplicitDifferenceMethod::calcRadius()
 {
     variables.r[0] = 1 / variables.L;
 
-    for (auto i = 1; i < N + 1; i++)
+    for (auto i = 1; i < initialParameters->N + 1; i++)
     {
         double tmpBeta = (variables.beta[i - 1] + variables.beta[i]) / 2;
-        variables.r[i] = variables.r[i - 1] + STEP * cos(tmpBeta);
+        variables.r[i] = variables.r[i - 1] + initialParameters->STEP * cos(tmpBeta);
     }
 }
 
 
 void algorithm::ExplicitDifferenceMethod::calcHeight()
 {
-    variables.z[N] = 0;
+    variables.z[initialParameters->N] = 0;
 
-    for (auto i = N - 1; i >= 0; i--)
+    for (auto i = initialParameters->N - 1; i >= 0; i--)
     {
         double tmpBeta = (variables.beta[i] + variables.beta[i + 1]) / 2;
-        variables.z[i] = variables.z[i + 1] - STEP * sin(tmpBeta);
+        variables.z[i] = variables.z[i + 1] - initialParameters->STEP * sin(tmpBeta);
     }
 }
 
@@ -118,7 +119,7 @@ void algorithm::ExplicitDifferenceMethod::runIterationProcess() noexcept(false)
 
         iterationsCounter++;
 
-        if (iterationsCounter - startIterationsCounter > MAX_ITERATIONS_NUMBER)
+        if (iterationsCounter - startIterationsCounter > initialParameters->MAX_ITERATIONS_NUMBER)
         {
             throw IterationsLimitException();
         }
@@ -126,10 +127,11 @@ void algorithm::ExplicitDifferenceMethod::runIterationProcess() noexcept(false)
         {
             if (iterationFinishedCallback != nullptr)
             {
-                (*iterationFinishedCallback)(iterationsCounter - startIterationsCounter, MAX_ITERATIONS_NUMBER);
+                (*iterationFinishedCallback)(
+                        iterationsCounter - startIterationsCounter, initialParameters->MAX_ITERATIONS_NUMBER);
             }
         }
-    } while (residual > ACCURACY);
+    } while (residual > initialParameters->ACCURACY);
 
     if (!isValid(variables.r) || !isValid(variables.z))
     {
@@ -179,7 +181,7 @@ double algorithm::ExplicitDifferenceMethod::calcIntegral0()
 {
     double result = 0;
 
-    for (auto i = 1; i < N + 1; i++)
+    for (auto i = 1; i < initialParameters->N + 1; i++)
     {
         double tmpZ = (variables.z[i - 1] + variables.z[i]) / 2;
         double tmpR = (variables.r[i - 1] + variables.r[i]) / 2;
@@ -188,7 +190,7 @@ double algorithm::ExplicitDifferenceMethod::calcIntegral0()
         result += tmp;
     }
 
-    result *= 2 * M_PI * STEP;
+    result *= 2 * M_PI * initialParameters->STEP;
 
     return result;
 }
@@ -198,7 +200,7 @@ double algorithm::ExplicitDifferenceMethod::calcIntegral1()
 {
     double result = 0;
 
-    for (auto i = 1; i < N + 1; i++)
+    for (auto i = 1; i < initialParameters->N + 1; i++)
     {
         double tmpZ = (variables.z[i - 1] + variables.z[i]) / 2;
         double tmpR = (variables.r[i - 1] + variables.r[i]) / 2;
@@ -208,7 +210,7 @@ double algorithm::ExplicitDifferenceMethod::calcIntegral1()
         result += tmp;
     }
 
-    result *= 2 * M_PI * STEP;
+    result *= 2 * M_PI * initialParameters->STEP;
 
     return result;
 }
@@ -218,7 +220,7 @@ double algorithm::ExplicitDifferenceMethod::calcIntegral2()
 {
     double result = 0;
 
-    for (auto i = 1; i < N + 1; i++)
+    for (auto i = 1; i < initialParameters->N + 1; i++)
     {
         double tmpR = (variables.r[i - 1] + variables.r[i]) / 2;
         double tmpBeta = (variables.beta[i - 1] + variables.beta[i]) / 2;
@@ -227,7 +229,7 @@ double algorithm::ExplicitDifferenceMethod::calcIntegral2()
         result += tmp;
     }
 
-    result *= STEP;
+    result *= initialParameters->STEP;
 
     return result;
 }

@@ -13,29 +13,52 @@ namespace algorithm
     const double LOWER_BOUND = 0;
     const double UPPER_BOUND = 1;
 
-    const int N = 200; //500
-    const double STEP = (UPPER_BOUND - LOWER_BOUND) / N;
-    const double ACCURACY = 1E-5;
-    const int MAX_ITERATIONS_NUMBER = 30000;
-    const double MIN_RELAXATION_PARAMETER = 0.05;
-    const double RELAXATION_MULTIPLIER = 0.5;
-
-    const double INITIAL_TAU = 1; //1
-    const double INITIAL_U = 3; //100, 400
-    const double INITIAL_B0 = 1; //1
-    const double INITIAL_A1 = 6; //0, 1, 3, 6
-    const double INITIAL_A2 = 0.05; //0, 1, 3, 6
-    const double INITIAL_ALPHA = M_PI_4; //M_PI_4, M_PI_2
-
-
+/**
+ * TESTED PARAMETERS:
+ * N = 200, 500;
+ * ACCURACY = 1E-5;
+ * MAX_ITERATIONS_NUMBER = 30000;
+ * MIN_RELAXATION_PARAMETER = 0.05;
+ * MIN_RELAXATION_PARAMETER = 0.05;
+ * RELAXATION_MULTIPLIER = 0.5;
+ * INITIAL_TAU = 1;
+ * INITIAL_U = 3, 100, 400;
+ * INITIAL_B0 = 1;
+ * INITIAL_A1 = 0, 1, 3, 6;
+ * INITIAL_A2 = 0, 0.05, 1, 3, 6;
+ * INITIAL_ALPHA = M_PI_4, M_PI_2;
+ */
     class InitialParameters
     {
     public:
-        const int a;
+        const int N;
+        const double STEP;
+        const double ACCURACY;
+        const int MAX_ITERATIONS_NUMBER;
+        const double MIN_RELAXATION_PARAMETER;
+        const double RELAXATION_MULTIPLIER;
 
-        InitialParameters():a(0){}
+        const double INITIAL_TAU;
+        const double INITIAL_U;
+        const double INITIAL_B0;
+        const double INITIAL_A1;
+        const double INITIAL_A2;
+        const double INITIAL_ALPHA;
 
-        InitialParameters(int a):a(a){}
+        InitialParameters() :
+                N(0), STEP(0), ACCURACY(0), MAX_ITERATIONS_NUMBER(0), MIN_RELAXATION_PARAMETER(0),
+                RELAXATION_MULTIPLIER(0), INITIAL_TAU(0), INITIAL_U(0), INITIAL_B0(0), INITIAL_A1(0), INITIAL_A2(0),
+                INITIAL_ALPHA(0) {}
+
+        InitialParameters(
+                int N, double ACCURACY, int MAX_ITERATIONS_NUMBER, double MIN_RELAXATION_PARAMETER,
+                double RELAXATION_MULTIPLIER, double INITIAL_TAU, double INITIAL_U, double INITIAL_B0,
+                double INITIAL_A1, double INITIAL_A2, double INITIAL_ALPHA)
+                :
+                N(N), STEP((UPPER_BOUND - LOWER_BOUND) / N), ACCURACY(ACCURACY),
+                MAX_ITERATIONS_NUMBER(MAX_ITERATIONS_NUMBER), MIN_RELAXATION_PARAMETER(MIN_RELAXATION_PARAMETER),
+                RELAXATION_MULTIPLIER(RELAXATION_MULTIPLIER), INITIAL_TAU(INITIAL_TAU), INITIAL_U(INITIAL_U),
+                INITIAL_B0(INITIAL_B0), INITIAL_A1(INITIAL_A1), INITIAL_A2(INITIAL_A2), INITIAL_ALPHA(INITIAL_ALPHA) {}
     };
 
     struct Variables
@@ -94,7 +117,8 @@ namespace algorithm
     public:
         DifferenceMethod(
                 std::vector<Variables>* experimentVariables,
-                std::vector<IterationInfo>* iterationsInfo);
+                std::vector<IterationInfo>* iterationsInfo,
+                InitialParameters* initialParameters);
 
         virtual ~DifferenceMethod();
 
@@ -111,10 +135,6 @@ namespace algorithm
         void setTargetParameters(std::vector<TargetParameter>* targetParameters);
 
         std::vector<TargetParameter>* getTargetParameters();
-
-        void setInitialParameters(InitialParameters* initialParameters);
-
-        InitialParameters* getInitialParameters();
 
     protected:
         DifferenceMethod();
@@ -133,17 +153,17 @@ namespace algorithm
          * -1 pushes only last experiment
          */
         void changeParameter(
-                double &parameter, double target, double step, long long drawRate, std::string parameterName)
+                double& parameter, double target, double step, long long drawRate, std::string parameterName)
         noexcept(false);
 
-        void increaseParameter(double &parameter, double target, double step, long long drawRate) noexcept(false);
+        void increaseParameter(double& parameter, double target, double step, long long drawRate) noexcept(false);
 
-        void decreaseParameter(double &parameter, double target, double step, long long drawRate) noexcept(false);
+        void decreaseParameter(double& parameter, double target, double step, long long drawRate) noexcept(false);
 
         void runExperiment(long long drawRate) noexcept(false);
 
         void pushExperimentResults(long long drawRate);
 
-        double* getVariableParameterPointerByName(const std::string &parameterName);
+        double* getVariableParameterPointerByName(const std::string& parameterName);
     };
 }

@@ -13,7 +13,8 @@ algorithm::DifferenceMethod::DifferenceMethod() = default;
 
 algorithm::DifferenceMethod::DifferenceMethod(
         std::vector<Variables>* experimentVariables,
-        std::vector<IterationInfo>* iterationsInfo)
+        std::vector<IterationInfo>* iterationsInfo,
+        InitialParameters* initialParameters)
 {
     if (experimentVariables == nullptr)
     {
@@ -23,14 +24,19 @@ algorithm::DifferenceMethod::DifferenceMethod(
     {
         throw std::runtime_error("DifferenceMethod: iterationsInfo is null");
     }
+    if (initialParameters == nullptr)
+    {
+        throw std::runtime_error("DifferenceMethod: initialParameters is null");
+    }
 
     this->experimentVariables = experimentVariables;
     this->iterationsInfo = iterationsInfo;
+    this->initialParameters = initialParameters;
 
-    variables.s = std::vector<double>(N + 1);
-    variables.r = std::vector<double>(N + 1);
-    variables.z = std::vector<double>(N + 1);
-    variables.beta = std::vector<double>(N + 1);
+    variables.s = std::vector<double>(initialParameters->N + 1);
+    variables.r = std::vector<double>(initialParameters->N + 1);
+    variables.z = std::vector<double>(initialParameters->N + 1);
+    variables.beta = std::vector<double>(initialParameters->N + 1);
 
     isNeedResetTau = false;
 }
@@ -44,27 +50,24 @@ algorithm::DifferenceMethod::~DifferenceMethod() = default;
 void algorithm::DifferenceMethod::fillVariables()
 {
     double a = variables.s[0];
-    for (auto i = 0; i < N + 1; i++)
+    for (auto i = 0; i < initialParameters->N + 1; i++)
     {
-        variables.s[i] = LOWER_BOUND + i * STEP;
+        variables.s[i] = LOWER_BOUND + i * initialParameters->STEP;
 
         variables.r[i] = 1 + variables.s[i];
 
-        variables.z[N - i] = variables.s[i];
+        variables.z[initialParameters->N - i] = variables.s[i];
 
         variables.beta[i] = -M_PI_4;
     }
 
     variables.L = 0;
-    variables.TAU = INITIAL_TAU;
-    variables.U = INITIAL_U;
-    variables.B0 = INITIAL_B0;
-    variables.A1 = INITIAL_A1;
-    variables.A2 = INITIAL_A2;
-    variables.ALPHA = INITIAL_ALPHA;
-
-    std::cout << initialParameters->a;
-    std::cout << std::endl;
+    variables.TAU = initialParameters->INITIAL_TAU;
+    variables.U = initialParameters->INITIAL_U;
+    variables.B0 = initialParameters->INITIAL_B0;
+    variables.A1 = initialParameters->INITIAL_A1;
+    variables.A2 = initialParameters->INITIAL_A2;
+    variables.ALPHA = initialParameters->INITIAL_ALPHA;
 }
 
 
@@ -82,7 +85,7 @@ void algorithm::DifferenceMethod::changeParameter(
 {
     if (isNeedResetTau)
     {
-        variables.TAU = INITIAL_TAU;
+        variables.TAU = initialParameters->INITIAL_TAU;
     }
 
     bool isCalculated = false;
@@ -96,7 +99,7 @@ void algorithm::DifferenceMethod::changeParameter(
         std::cout << "////////////" << std::endl;
     }
 
-    while (variables.TAU >= MIN_RELAXATION_PARAMETER && !isCalculated)
+    while (variables.TAU >= initialParameters->MIN_RELAXATION_PARAMETER && !isCalculated)
     {
         try
         {
@@ -117,7 +120,7 @@ void algorithm::DifferenceMethod::changeParameter(
             std::cerr << "Invalid result:" << std::endl;
             std::cout << "relaxation parameter: " << std::endl;
             std::cout << "current: " << variables.TAU << ", ";
-            variables.TAU *= RELAXATION_MULTIPLIER;
+            variables.TAU *= initialParameters->RELAXATION_MULTIPLIER;
             std::cout << "new: " << variables.TAU << std::endl;
             std::cout << "-----" << std::endl;
         }
@@ -126,7 +129,7 @@ void algorithm::DifferenceMethod::changeParameter(
             std::cerr << "Too many iterations:" << std::endl;
             std::cout << "relaxation parameter: " << std::endl;
             std::cout << "current: " << variables.TAU << ", ";
-            variables.TAU *= RELAXATION_MULTIPLIER;
+            variables.TAU *= initialParameters->RELAXATION_MULTIPLIER;
             std::cout << "new: " << variables.TAU << std::endl;
             std::cout << "-----" << std::endl;
         }
@@ -328,14 +331,4 @@ void algorithm::DifferenceMethod::setTargetParameters(std::vector<TargetParamete
 std::vector<algorithm::TargetParameter>* algorithm::DifferenceMethod::getTargetParameters()
 {
     return targetParameters;
-}
-
-void algorithm::DifferenceMethod::setInitialParameters(InitialParameters* initialParameters)
-{
-    this->initialParameters = initialParameters;
-}
-
-algorithm::InitialParameters* algorithm::DifferenceMethod::getInitialParameters()
-{
-    return initialParameters;
 }
