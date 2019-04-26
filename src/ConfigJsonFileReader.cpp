@@ -8,29 +8,43 @@
 #include <MagneticFluidFormAlgorithm/Exceptions.h>
 
 
-std::vector<algorithm::TargetParameter>* algorithm::ConfigJsonFileReader::readCalculationsSequenceFromFile(
-        const char* filePath)
-{
-    auto resultSequence = new std::vector<algorithm::TargetParameter>();
+algorithm::ConfigJsonFileReader::ConfigJsonFileReader() : ConfigFileReader(), document(nullptr) {}
 
+
+algorithm::ConfigJsonFileReader::ConfigJsonFileReader(const std::string& filePath)
+{
     std::ifstream configFile(filePath);
     std::stringstream jsonBuffer;
     jsonBuffer << configFile.rdbuf();
 
-    rapidjson::Document document;
-    document.Parse(jsonBuffer.str().c_str());
+    document = new rapidjson::Document();
+    document->Parse(jsonBuffer.str().c_str());
 
-    if (!document.IsObject())
+    if (!document->IsObject())
     {
+        delete document;
         throw IncorrectConfigException("Json document does not contain any object");
     }
 
-    if (!document.HasMember(ALGORITHM_CONFIG_KEY))
+    if (!document->HasMember(ALGORITHM_CONFIG_KEY))
     {
+        delete document;
         throw IncorrectConfigException("Json document does not contain algorithm config");
     }
+}
 
-    auto algorithmConfigObject = document[ALGORITHM_CONFIG_KEY].GetObject();
+
+algorithm::ConfigJsonFileReader::~ConfigJsonFileReader()
+{
+    delete document;
+}
+
+
+std::vector<algorithm::TargetParameter>* algorithm::ConfigJsonFileReader::readCalculationsSequenceFromFile()
+{
+    auto resultSequence = new std::vector<algorithm::TargetParameter>();
+
+    auto algorithmConfigObject = (*document)[ALGORITHM_CONFIG_KEY].GetObject();
 
     if (!algorithmConfigObject.HasMember(CALCULATIONS_SEQUENCE_KEY))
     {
@@ -51,4 +65,29 @@ std::vector<algorithm::TargetParameter>* algorithm::ConfigJsonFileReader::readCa
     }
 
     return resultSequence;
+}
+
+
+algorithm::InitialParameters* algorithm::ConfigJsonFileReader::readAlgorithmInitialParameters()
+{
+    auto algorithmConfigObject = (*document)[ALGORITHM_CONFIG_KEY].GetObject();
+
+    if (!algorithmConfigObject.HasMember(CALCULATIONS_SEQUENCE_KEY))
+    {
+        throw IncorrectConfigException("Json document does not contain algorithm calculations sequence");
+    }
+
+    return new InitialParameters(
+            algorithmConfigObject[NODES_NUMBER_KEY].GetInt(),
+            algorithmConfigObject[TARGET_ACCURACY_KEY].GetDouble(),
+            algorithmConfigObject[MAX_ITERATIONS_NUMBER_KEY].GetInt(),
+            algorithmConfigObject[MIN_RELAXATION_PARAMETER_KEY].GetDouble(),
+            algorithmConfigObject[RELAXATION_MULTIPLIER_KEY].GetDouble(),
+            algorithmConfigObject[INITIAL_TAU_KEY].GetDouble(),
+            algorithmConfigObject[INITIAL_U_KEY].GetDouble(),
+            algorithmConfigObject[INITIAL_B0_KEY].GetDouble(),
+            algorithmConfigObject[INITIAL_A1_KEY].GetDouble(),
+            algorithmConfigObject[INITIAL_A2_KEY].GetDouble(),
+            algorithmConfigObject[INITIAL_ALPHA_KEY].GetDouble()
+            );
 }

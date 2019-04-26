@@ -2,8 +2,6 @@
 
 #include <cmath>
 
-#include <MagneticFluidFormAlgorithm/MagneticFluidFormAlgorithm.h>
-
 
 int algorithm::sgn(double value)
 {

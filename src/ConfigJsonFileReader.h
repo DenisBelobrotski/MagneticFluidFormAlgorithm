@@ -2,13 +2,25 @@
 
 #include <vector>
 
-#include "ConfigFileReader.h"
+#include <MagneticFluidFormAlgorithm/ConfigFileReader.h>
+#include <rapidjson/document.h>
 
 
 namespace algorithm
 {
     class ConfigJsonFileReader : public ConfigFileReader
     {
-        std::vector<TargetParameter>* readCalculationsSequenceFromFile(const char* filePath) override;
+    private:
+        rapidjson::Document* document;
+    public:
+        ConfigJsonFileReader();
+
+        explicit ConfigJsonFileReader(const std::string& filePath);
+
+        ~ConfigJsonFileReader() override;
+
+        std::vector<TargetParameter>* readCalculationsSequenceFromFile() override;
+
+        InitialParameters* readAlgorithmInitialParameters() override;
     };
 }

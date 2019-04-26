@@ -1,7 +1,9 @@
+#include "MagneticFluidFormAlgorithm/ImplicitDifferenceMethod.h"
 #include "RightSweep.h"
 #include "Formulas.h"
 
-#include <MagneticFluidFormAlgorithm/MagneticFluidFormAlgorithm.h>
+#include <MagneticFluidFormAlgorithm/MathUtils.h>
+#include <MagneticFluidFormAlgorithm/Exceptions.h>
 
 
 algorithm::ImplicitDifferenceMethod::ImplicitDifferenceMethod() : DifferenceMethod()

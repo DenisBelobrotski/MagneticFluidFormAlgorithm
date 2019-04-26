@@ -1,4 +1,4 @@
-#include <MagneticFluidFormAlgorithm/MagneticFluidFormAlgorithm.h>
+#include "MagneticFluidFormAlgorithm/Exceptions.h"
 
 
 algorithm::InvalidResultException::InvalidResultException() :

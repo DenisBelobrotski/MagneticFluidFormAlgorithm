@@ -4,8 +4,6 @@
 #include <cmath>
 #include <iostream>
 
-#include <MagneticFluidFormAlgorithm/MagneticFluidFormAlgorithm.h>
-
 
 namespace algorithm
 {

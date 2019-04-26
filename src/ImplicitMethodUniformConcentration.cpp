@@ -1,4 +1,4 @@
-#include <MagneticFluidFormAlgorithm/MagneticFluidFormAlgorithm.h>
+#include "MagneticFluidFormAlgorithm/ImplicitMethodUniformConcentration.h"
 
 
 algorithm::ImplicitMethodUniformConcentration::ImplicitMethodUniformConcentration() : ImplicitDifferenceMethod()

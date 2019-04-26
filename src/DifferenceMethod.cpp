@@ -1,9 +1,10 @@
+#include "MagneticFluidFormAlgorithm/DifferenceMethod.h"
 #include "Formulas.h"
 
 #include <iostream>
 #include <string>
 
-#include <MagneticFluidFormAlgorithm/MagneticFluidFormAlgorithm.h>
+#include <MagneticFluidFormAlgorithm/Exceptions.h>
 
 
 #pragma MARK - Object lifecycle
@@ -49,7 +50,6 @@ algorithm::DifferenceMethod::~DifferenceMethod() = default;
 
 void algorithm::DifferenceMethod::fillVariables()
 {
-    double a = variables.s[0];
     for (auto i = 0; i < initialParameters->N + 1; i++)
     {
         variables.s[i] = LOWER_BOUND + i * initialParameters->STEP;

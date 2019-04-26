@@ -1,6 +1,8 @@
+#include "MagneticFluidFormAlgorithm/ExplicitDifferenceMethod.h"
 #include "Formulas.h"
 
-#include <MagneticFluidFormAlgorithm/MagneticFluidFormAlgorithm.h>
+#include <MagneticFluidFormAlgorithm/MathUtils.h>
+#include <MagneticFluidFormAlgorithm/Exceptions.h>
 
 
 algorithm::ExplicitDifferenceMethod::ExplicitDifferenceMethod() : DifferenceMethod()

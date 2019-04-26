@@ -1,8 +1,9 @@
 #pragma once
 
-#include <vector>
+#include "ConfigFileReader.h"
 
-#include <MagneticFluidFormAlgorithm/MagneticFluidFormAlgorithm.h>
+#include <vector>
+#include <string>
 
 
 namespace algorithm
@@ -15,9 +16,21 @@ namespace algorithm
 
     class AlgorithmConfigurator
     {
+    private:
+        ConfigFileReader* configFileReader;
     public:
-        std::vector<TargetParameter>* readAlgorithmSequenceFromFile(const char* filePath, ConfigFileType fileType);
+        AlgorithmConfigurator();
+
+        AlgorithmConfigurator(const std::string& filePath, ConfigFileType fileType);
+
+        ~AlgorithmConfigurator();
+
+        std::vector<TargetParameter>* readAlgorithmSequenceFromFile();
 
         std::vector<TargetParameter>* getTutorialAlgorithmSequence();
+
+        InitialParameters* readAlgorithmInitialParameters();
+
+        InitialParameters* getDefaultAlgorithmInitialParameters();
     };
 }
