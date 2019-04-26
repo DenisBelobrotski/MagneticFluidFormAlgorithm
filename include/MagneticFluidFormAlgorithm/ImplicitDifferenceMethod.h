@@ -9,8 +9,8 @@ namespace algorithm
     {
     public:
         ImplicitDifferenceMethod(
-                std::vector<Variables> *experimentVariables,
-                std::vector<IterationInfo> *iterationsInfo,
+                std::vector<Variables>* experimentVariables,
+                std::vector<IterationInfo>* iterationsInfo,
                 InitialParameters* initialParameters);
 
         ~ImplicitDifferenceMethod() override;
@@ -36,7 +36,7 @@ namespace algorithm
         void calcIteration();
 
         void fillMatrices(
-                std::vector<std::vector<double>> &radiusMatrix, std::vector<double> &radiusFreeMembers,
-                std::vector<std::vector<double>> &heightMatrix, std::vector<double> &heightFreeMembers);
+                std::vector<std::vector<double>>& radiusMatrix, std::vector<double>& radiusFreeMembers,
+                std::vector<std::vector<double>>& heightMatrix, std::vector<double>& heightFreeMembers);
     };
 }

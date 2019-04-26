@@ -12,8 +12,8 @@ namespace algorithm
     {
     public:
         ExplicitDifferenceMethod(
-                std::vector<Variables> *experimentVariables,
-                std::vector<IterationInfo> *iterationsInfo,
+                std::vector<Variables>* experimentVariables,
+                std::vector<IterationInfo>* iterationsInfo,
                 InitialParameters* initialParameters);
 
         ~ExplicitDifferenceMethod() override;

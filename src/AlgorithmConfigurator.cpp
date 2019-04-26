@@ -2,7 +2,7 @@
 #include "ConfigJsonFileReader.h"
 
 
-algorithm::AlgorithmConfigurator::AlgorithmConfigurator(): configFileReader(nullptr) {}
+algorithm::AlgorithmConfigurator::AlgorithmConfigurator() : configFileReader(nullptr) {}
 
 algorithm::AlgorithmConfigurator::AlgorithmConfigurator(const std::string& filePath, ConfigFileType fileType)
 {

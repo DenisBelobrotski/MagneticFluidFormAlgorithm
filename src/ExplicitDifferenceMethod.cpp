@@ -11,8 +11,8 @@ algorithm::ExplicitDifferenceMethod::ExplicitDifferenceMethod() : DifferenceMeth
 
 
 algorithm::ExplicitDifferenceMethod::ExplicitDifferenceMethod(
-        std::vector<Variables> *experimentVariables,
-        std::vector<IterationInfo> *iterationsInfo,
+        std::vector<Variables>* experimentVariables,
+        std::vector<IterationInfo>* iterationsInfo,
         InitialParameters* initialParameters)
         :
         DifferenceMethod(experimentVariables, iterationsInfo, initialParameters)

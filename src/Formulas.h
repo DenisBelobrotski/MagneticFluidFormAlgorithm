@@ -10,5 +10,5 @@ namespace algorithm
 
     double calcL(double I0, double U);
 
-    void convertLengthToRadiusDimensionedVariables(Variables &variables);
+    void convertLengthToRadiusDimensionedVariables(Variables& variables);
 }

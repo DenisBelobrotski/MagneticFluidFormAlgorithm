@@ -25,7 +25,7 @@ double algorithm::calcL(double I0, double U)
 }
 
 
-void algorithm::convertLengthToRadiusDimensionedVariables(Variables &variables)
+void algorithm::convertLengthToRadiusDimensionedVariables(Variables& variables)
 {
     for (int i = 0; i < variables.r.size(); i++)
     {

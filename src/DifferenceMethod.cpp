@@ -81,7 +81,7 @@ void algorithm::DifferenceMethod::resetFields()
 
 
 void algorithm::DifferenceMethod::changeParameter(
-        double &parameter, double target, double step, long long drawRate, std::string parameterName) noexcept(false)
+        double& parameter, double target, double step, long long drawRate, std::string parameterName) noexcept(false)
 {
     if (isNeedResetTau)
     {
@@ -115,7 +115,7 @@ void algorithm::DifferenceMethod::changeParameter(
             isCalculated = true;
 
         }
-        catch (InvalidResultException &e)
+        catch (InvalidResultException& e)
         {
             std::cerr << "Invalid result:" << std::endl;
             std::cout << "relaxation parameter: " << std::endl;
@@ -124,7 +124,7 @@ void algorithm::DifferenceMethod::changeParameter(
             std::cout << "new: " << variables.TAU << std::endl;
             std::cout << "-----" << std::endl;
         }
-        catch (IterationsLimitException &e)
+        catch (IterationsLimitException& e)
         {
             std::cerr << "Too many iterations:" << std::endl;
             std::cout << "relaxation parameter: " << std::endl;
@@ -153,7 +153,7 @@ void algorithm::DifferenceMethod::changeParameter(
     }
 }
 
-void algorithm::DifferenceMethod::increaseParameter(double &parameter, double target, double step, long long drawRate)
+void algorithm::DifferenceMethod::increaseParameter(double& parameter, double target, double step, long long drawRate)
 {
     while (parameter <= target)
     {
@@ -173,7 +173,7 @@ void algorithm::DifferenceMethod::increaseParameter(double &parameter, double ta
     }
 }
 
-void algorithm::DifferenceMethod::decreaseParameter(double &parameter, double target, double step, long long drawRate)
+void algorithm::DifferenceMethod::decreaseParameter(double& parameter, double target, double step, long long drawRate)
 {
     while (parameter >= target)
     {
@@ -231,7 +231,7 @@ void algorithm::DifferenceMethod::pushExperimentResults(long long drawRate)
 }
 
 
-double* algorithm::DifferenceMethod::getVariableParameterPointerByName(const std::string &parameterName)
+double* algorithm::DifferenceMethod::getVariableParameterPointerByName(const std::string& parameterName)
 {
     double* resultPtr = nullptr;
 
@@ -273,7 +273,7 @@ void algorithm::DifferenceMethod::calcResult()
     {
         if (targetParameters != nullptr)
         {
-            for (auto &targetParameter : *targetParameters)
+            for (auto& targetParameter : *targetParameters)
             {
                 double* variableParameterPtr = getVariableParameterPointerByName(targetParameter.parameterName);
                 if (variableParameterPtr != nullptr)
@@ -285,7 +285,7 @@ void algorithm::DifferenceMethod::calcResult()
             }
         }
     }
-    catch (ParameterNotReachTargetValue &e)
+    catch (ParameterNotReachTargetValue& e)
     {
         std::cerr << "Parameter " << e.getParameterName() << " didn't reach target value "
                   << e.getTargetValue() << std::endl;

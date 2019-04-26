@@ -5,5 +5,5 @@
 namespace algorithm
 {
     void calcRightSweep(
-            std::vector<std::vector<double>> &matrix, std::vector<double> &freeMembers, std::vector<double> &result);
+            std::vector<std::vector<double>>& matrix, std::vector<double>& freeMembers, std::vector<double>& result);
 }

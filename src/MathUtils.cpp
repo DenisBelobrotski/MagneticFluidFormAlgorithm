@@ -7,7 +7,7 @@
 #include <MagneticFluidFormAlgorithm/Exceptions.h>
 
 
-double algorithm::calcResidual(std::vector<double> &vector1, std::vector<double> &vector2) noexcept(false)
+double algorithm::calcResidual(std::vector<double>& vector1, std::vector<double>& vector2) noexcept(false)
 {
     const auto size1 = vector1.size();
     const auto size2 = vector2.size();
@@ -31,9 +31,9 @@ double algorithm::calcResidual(std::vector<double> &vector1, std::vector<double>
 }
 
 
-bool algorithm::isValid(std::vector<double> &vals)
+bool algorithm::isValid(std::vector<double>& vals)
 {
-    for (auto &val : vals)
+    for (auto& val : vals)
     {
         if (!std::isfinite(val))
         {

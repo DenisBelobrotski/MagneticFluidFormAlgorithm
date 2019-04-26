@@ -9,8 +9,8 @@ namespace algorithm
     {
     public:
         ImplicitMethodUniformConcentration(
-                std::vector<Variables> *experimentVariables,
-                std::vector<IterationInfo> *iterationsInfo,
+                std::vector<Variables>* experimentVariables,
+                std::vector<IterationInfo>* iterationsInfo,
                 InitialParameters* initialParameters);
 
         ~ImplicitMethodUniformConcentration() override;

@@ -89,5 +89,5 @@ algorithm::InitialParameters* algorithm::ConfigJsonFileReader::readAlgorithmInit
             algorithmConfigObject[INITIAL_A1_KEY].GetDouble(),
             algorithmConfigObject[INITIAL_A2_KEY].GetDouble(),
             algorithmConfigObject[INITIAL_ALPHA_KEY].GetDouble()
-            );
+    );
 }
