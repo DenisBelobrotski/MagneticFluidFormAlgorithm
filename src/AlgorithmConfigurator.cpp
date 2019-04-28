@@ -4,6 +4,7 @@
 
 algorithm::AlgorithmConfigurator::AlgorithmConfigurator() : configFileReader(nullptr) {}
 
+
 algorithm::AlgorithmConfigurator::AlgorithmConfigurator(const std::string& filePath, ConfigFileType fileType)
 {
     switch (fileType)
@@ -16,6 +17,7 @@ algorithm::AlgorithmConfigurator::AlgorithmConfigurator(const std::string& fileP
             configFileReader = nullptr;
     }
 }
+
 
 algorithm::AlgorithmConfigurator::~AlgorithmConfigurator()
 {

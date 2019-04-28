@@ -72,11 +72,6 @@ algorithm::InitialParameters* algorithm::ConfigJsonFileReader::readAlgorithmInit
 {
     auto algorithmConfigObject = (*document)[ALGORITHM_CONFIG_KEY].GetObject();
 
-    if (!algorithmConfigObject.HasMember(CALCULATIONS_SEQUENCE_KEY))
-    {
-        throw IncorrectConfigException("Json document does not contain algorithm calculations sequence");
-    }
-
     return new InitialParameters(
             algorithmConfigObject[NODES_NUMBER_KEY].GetInt(),
             algorithmConfigObject[TARGET_ACCURACY_KEY].GetDouble(),
