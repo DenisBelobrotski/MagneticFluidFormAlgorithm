@@ -225,6 +225,7 @@ void algorithm::DifferenceMethod::pushExperimentResults(long long drawRate)
         currentIterationInfo.a1 = variables.A1;
         currentIterationInfo.a2 = variables.A2;
         currentIterationInfo.alpha = variables.ALPHA;
+        currentIterationInfo.mainValueName = currentParameterName;
 
         iterationsInfo->push_back(currentIterationInfo);
     }
@@ -276,6 +277,7 @@ void algorithm::DifferenceMethod::calcResult()
             for (auto& targetParameter : *targetParameters)
             {
                 double* variableParameterPtr = getVariableParameterPointerByName(targetParameter.parameterName);
+                currentParameterName = targetParameter.parameterName;
                 if (variableParameterPtr != nullptr)
                 {
                     changeParameter(
