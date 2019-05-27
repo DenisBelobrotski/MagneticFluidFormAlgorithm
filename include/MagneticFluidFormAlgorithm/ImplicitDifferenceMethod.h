@@ -9,7 +9,6 @@ namespace algorithm
     {
     public:
         ImplicitDifferenceMethod(
-                std::vector<Variables>* experimentVariables,
                 std::vector<IterationInfo>* iterationsInfo,
                 InitialParameters* initialParameters);
 

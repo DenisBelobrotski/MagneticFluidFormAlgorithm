@@ -13,14 +13,9 @@ algorithm::DifferenceMethod::DifferenceMethod() = default;
 
 
 algorithm::DifferenceMethod::DifferenceMethod(
-        std::vector<Variables>* experimentVariables,
         std::vector<IterationInfo>* iterationsInfo,
         InitialParameters* initialParameters)
 {
-    if (experimentVariables == nullptr)
-    {
-        throw std::runtime_error("DifferenceMethod: experimentVariables is null");
-    }
     if (iterationsInfo == nullptr)
     {
         throw std::runtime_error("DifferenceMethod: iterationsInfo is null");
@@ -30,7 +25,6 @@ algorithm::DifferenceMethod::DifferenceMethod(
         throw std::runtime_error("DifferenceMethod: initialParameters is null");
     }
 
-    this->experimentVariables = experimentVariables;
     this->iterationsInfo = iterationsInfo;
     this->initialParameters = initialParameters;
 
@@ -81,7 +75,8 @@ void algorithm::DifferenceMethod::resetFields()
 
 
 void algorithm::DifferenceMethod::changeParameter(
-        double& parameter, double target, double step, long long drawRate, std::string parameterName) noexcept(false)
+        double& parameter, double target, double step, long long drawRate,
+        const std::string& parameterName) noexcept(false)
 {
     if (isNeedResetTau)
     {
@@ -198,37 +193,30 @@ void algorithm::DifferenceMethod::runExperiment(long long drawRate)
 {
     runIterationProcess();
 
-    pushExperimentResults(drawRate);
+    if (
+            (drawRate > 0 && experimentsCounter % drawRate == 0)
+            || (isLastExperiment && drawRate != -2)
+            )
+    {
+        pushExperimentResults();
+    }
 
     experimentsCounter++;
 }
 
 
-void algorithm::DifferenceMethod::pushExperimentResults(long long drawRate)
+void algorithm::DifferenceMethod::pushExperimentResults()
 {
     IterationInfo currentIterationInfo{};
     Variables resultVariables = variables;
 
     convertLengthToRadiusDimensionedVariables(resultVariables);
 
-    experimentVariables->push_back(resultVariables);
+    currentIterationInfo.index = experimentsCounter;
+    currentIterationInfo.variables = resultVariables;
+    currentIterationInfo.mainValueName = currentParameterName;
 
-    if (
-            (drawRate > 0 && experimentsCounter % drawRate == 0)
-            || (isLastExperiment && drawRate != -2)
-            )
-    {
-        currentIterationInfo.index = experimentsCounter;
-        currentIterationInfo.tau = variables.TAU;
-        currentIterationInfo.u = variables.U;
-        currentIterationInfo.b0 = variables.B0;
-        currentIterationInfo.a1 = variables.A1;
-        currentIterationInfo.a2 = variables.A2;
-        currentIterationInfo.alpha = variables.ALPHA;
-        currentIterationInfo.mainValueName = currentParameterName;
-
-        iterationsInfo->push_back(currentIterationInfo);
-    }
+    iterationsInfo->push_back(currentIterationInfo);
 }
 
 

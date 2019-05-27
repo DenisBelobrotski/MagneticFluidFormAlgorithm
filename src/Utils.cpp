@@ -7,23 +7,23 @@ double algorithm::IterationInfo::getDoubleValueByName(const std::string& valueNa
 
     if (valueName == "U")
     {
-        result = u;
+        result = variables.U;
     }
     if (valueName == "B0")
     {
-        result = b0;
+        result = variables.B0;
     }
     if (valueName == "A1")
     {
-        result = a1;
+        result = variables.A1;
     }
     if (valueName == "A2")
     {
-        result = a2;
+        result = variables.A2;
     }
     if (valueName == "ALPHA")
     {
-        result = alpha;
+        result = variables.ALPHA;
     }
 
     return result;

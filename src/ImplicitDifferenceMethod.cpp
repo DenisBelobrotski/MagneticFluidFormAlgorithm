@@ -12,11 +12,10 @@ algorithm::ImplicitDifferenceMethod::ImplicitDifferenceMethod() : DifferenceMeth
 
 
 algorithm::ImplicitDifferenceMethod::ImplicitDifferenceMethod(
-        std::vector<Variables>* experimentVariables,
         std::vector<IterationInfo>* iterationsInfo,
         InitialParameters* initialParameters)
         :
-        DifferenceMethod(experimentVariables, iterationsInfo, initialParameters)
+        DifferenceMethod(iterationsInfo, initialParameters)
 {
 }
 

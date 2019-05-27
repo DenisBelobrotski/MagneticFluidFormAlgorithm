@@ -76,12 +76,7 @@ namespace algorithm
     struct IterationInfo
     {
         long long index;
-        double tau;
-        double u;
-        double b0;
-        double a1;
-        double a2;
-        double alpha;
+        Variables variables;
 
         std::string mainValueName;
 

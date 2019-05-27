@@ -7,11 +7,10 @@ algorithm::ImplicitMethodUniformConcentration::ImplicitMethodUniformConcentratio
 
 
 algorithm::ImplicitMethodUniformConcentration::ImplicitMethodUniformConcentration(
-        std::vector<Variables>* experimentVariables,
         std::vector<IterationInfo>* iterationsInfo,
         InitialParameters* initialParameters)
         :
-        ImplicitDifferenceMethod(experimentVariables, iterationsInfo, initialParameters)
+        ImplicitDifferenceMethod(iterationsInfo, initialParameters)
 {
 }
 

@@ -24,7 +24,6 @@ namespace algorithm
         InitialParameters* initialParameters;
 
     private:
-        std::vector<Variables>* experimentVariables;
         std::vector<IterationInfo>* iterationsInfo;
         std::vector<algorithm::TargetParameter>* targetParameters;
         bool isLastExperiment;
@@ -33,7 +32,6 @@ namespace algorithm
 
     public:
         DifferenceMethod(
-                std::vector<Variables>* experimentVariables,
                 std::vector<IterationInfo>* iterationsInfo,
                 InitialParameters* initialParameters);
 
@@ -70,7 +68,7 @@ namespace algorithm
          * -1 pushes only last experiment
          */
         void changeParameter(
-                double& parameter, double target, double step, long long drawRate, std::string parameterName)
+                double& parameter, double target, double step, long long drawRate, const std::string& parameterName)
         noexcept(false);
 
         void increaseParameter(double& parameter, double target, double step, long long drawRate) noexcept(false);
@@ -79,7 +77,7 @@ namespace algorithm
 
         void runExperiment(long long drawRate) noexcept(false);
 
-        void pushExperimentResults(long long drawRate);
+        void pushExperimentResults();
 
         double* getVariableParameterPointerByName(const std::string& parameterName);
     };
