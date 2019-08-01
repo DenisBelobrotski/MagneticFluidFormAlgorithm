@@ -26,15 +26,19 @@ namespace algorithm
     const auto INITIAL_A2_KEY = "initialA2";
     const auto INITIAL_ALPHA_KEY = "initialALPHA";
 
-    class ConfigFileReader
+    class ConfigReader
     {
     public:
-        ConfigFileReader() = default;
+        ConfigReader() = default;
 
-        virtual ~ConfigFileReader() = default;
+        virtual ~ConfigReader() = default;
 
-        virtual std::vector<TargetParameter>* readCalculationsSequenceFromFile() = 0;
+        virtual std::vector<TargetParameter>* getCalculationsSequence() = 0;
 
-        virtual InitialParameters* readAlgorithmInitialParameters() = 0;
+        virtual std::vector<TargetParameter>* getTutorialCalculationsSequence() = 0;
+
+        virtual InitialParameters* getAlgorithmInitialParameters() = 0;
+
+        virtual InitialParameters* getDefaultAlgorithmInitialParameters() = 0;
     };
 }
