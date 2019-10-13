@@ -4,4 +4,4 @@ This is the module that contains two algorithms for the numerical solution of th
 - Finite-difference method
 - Tangential method
 ## Extra
-This repository is a submodule of the [main repository](https://github.com/DenisBelobrotski/MagneticFluidFormProblemSolution) (my degree project)
+This repository is a submodule of the [main repository](https://github.com/DenisBelobrotski/MagneticFluidFormProblemSolution) (my degree project).
